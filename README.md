@@ -13,17 +13,21 @@ gradlew.bat :app:assembleDebug        # Windows
 ./gradlew :app:assembleDebug          # macOS/Linux
 ```
 
-APK: `app/build/outputs/apk/debug/app-debug.apk`
+APK: `app/build/outputs/apk/release/app-release.apk`
 
 Unit tests: `gradlew.bat :app:testDebugUnitTest`
 
 ## Download the APK from GitHub Actions
 
-Every push to `main` runs `.github/workflows/android.yml`:
+Every push to `main` runs `.github/workflows/android.yml` and builds a
+release APK signed with the CI debug key (installable, not Play-ready):
 
-1. Open the **Actions** tab and pick the latest `Android debug APK` run.
-2. Download the `jcode-mobile-debug` artifact.
-3. Unzip it and install `app-debug.apk` on the phone.
+1. Open the **Actions** tab and pick the latest `Android release APK` run.
+2. Download the `jcode-mobile-release` artifact.
+3. Unzip it and install `app-release.apk` on the phone.
+
+If an older debug build is installed, uninstall it first: the signatures
+differ and Android rejects an in-place update.
 
 ## Pair the phone
 

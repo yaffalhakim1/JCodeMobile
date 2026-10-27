@@ -1,4 +1,4 @@
-name: Android debug APK
+name: Android release APK
 
 on:
   push:
@@ -31,12 +31,12 @@ jobs:
       - name: Unit tests
         run: ./gradlew :app:testDebugUnitTest --no-daemon --stacktrace
 
-      - name: Build debug APK
-        run: ./gradlew :app:assembleDebug --no-daemon --stacktrace
+      - name: Build release APK
+        run: ./gradlew :app:assembleRelease --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: jcode-mobile-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: jcode-mobile-release
+          path: app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
