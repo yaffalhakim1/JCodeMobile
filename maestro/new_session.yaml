@@ -1,0 +1,6 @@
+appId: dev.jcode.mobile
+---
+- tapOn: "New session"
+- waitForAnimationToEnd
+- assertVisible: "Project folder"
+- takeScreenshot: new-session-sheet

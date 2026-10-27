@@ -1,0 +1,32 @@
+appId: dev.jcode.mobile
+name: Pair with the local mock gateway
+---
+- launchApp:
+    clearState: true
+
+# Optional system dialogs that can appear on a cold emulator boot.
+- tapOn:
+    text: "Wait"
+    optional: true
+- tapOn:
+    text: "Allow"
+    optional: true
+
+- assertVisible: "JCode"
+- assertVisible: "Pair a machine"
+
+- tapOn: "Host or tailnet name"
+- inputText: "127.0.0.1"
+- tapOn: "Pairing code"
+- inputText: "123456"
+- hideKeyboard
+- tapOn: "Pair and connect"
+
+# Seeded plan from the mock proves both the WebSocket subscription and history
+# were accepted, not just the HTTP pair request.
+- extendedWaitUntil:
+    visible: "Plan"
+    timeout: 30000
+- assertNotVisible: "Disconnected"
+- assertVisible: "Message jcode…"
+- takeScreenshot: 10-paired
