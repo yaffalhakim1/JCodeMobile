@@ -24,7 +24,8 @@ Every push to `main` publishes a rolling alpha release:
 https://github.com/yaffalhakim1/JCodeMobile/releases/tag/alpha
 
 Download `jcode-mobile-alpha-0.1.0.apk` and install it directly. It is signed
-with the CI debug key (installable, not Play-ready).
+with the committed alpha key so newer alpha builds install over it; this is not
+a Play Store key.
 
 If an older debug build is installed, uninstall it first: the signatures
 differ and Android rejects an in-place update.

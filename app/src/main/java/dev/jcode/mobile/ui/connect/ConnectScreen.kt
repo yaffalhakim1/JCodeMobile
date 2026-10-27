@@ -223,9 +223,8 @@ fun ConnectScreen(
                     busy = true
                     error = null
                     health = null
-                    scope.launch {
-                        repository.pair(host, port, code)
-                            .onSuccess { onPaired() }
+                    repository.pairAsync(host, port, code) { result ->
+                        result.onSuccess { onPaired() }
                             .onFailure { error = it.message }
                         busy = false
                     }

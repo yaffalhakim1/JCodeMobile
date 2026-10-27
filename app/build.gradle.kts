@@ -9,6 +9,17 @@ android {
     namespace = "dev.jcode.mobile"
     compileSdk = 36
 
+    signingConfigs {
+        // Stable personal alpha key so every CI build installs over the last
+        // one. Committed on purpose; not a Play Store key.
+        create("alpha") {
+            storeFile = rootProject.file("keystore/alpha.keystore")
+            storePassword = "jcodealpha"
+            keyAlias = "alpha"
+            keyPassword = "jcodealpha"
+        }
+    }
+
     defaultConfig {
         applicationId = "dev.jcode.mobile"
         minSdk = 26
@@ -20,9 +31,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            // Personal sideload build: sign with the debug key so CI can
-            // produce an installable APK without a release keystore in the repo.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("alpha")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

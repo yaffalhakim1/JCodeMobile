@@ -12,5 +12,6 @@ captures/
 *.aab
 *.jks
 *.keystore
+!keystore/alpha.keystore
 *.log
 .env

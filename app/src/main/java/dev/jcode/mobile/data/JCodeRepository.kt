@@ -43,6 +43,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.UUID
 
 /**
@@ -110,6 +111,23 @@ class JCodeRepository(context: Context) {
         settingsStore.upsertServer(profile)
         connect(profile, resumeSessionId = null)
         profile
+    }
+
+    /**
+     * Pairing must not run in a screen's composition scope. Saving the server
+     * removes the connect screen, which cancels that scope and used to abort
+     * the first connection before it started.
+     */
+    fun pairAsync(
+        hostInput: String,
+        portInput: String,
+        code: String,
+        onResult: (Result<ServerProfile>) -> Unit,
+    ) {
+        scope.launch {
+            val result = pair(hostInput, portInput, code)
+            withContext(Dispatchers.Main.immediate) { onResult(result) }
+        }
     }
 
     suspend fun connect(
