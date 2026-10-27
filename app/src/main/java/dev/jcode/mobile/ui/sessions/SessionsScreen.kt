@@ -176,7 +176,7 @@ fun SessionsScreen(
             if (state.phase != ConnectionPhase.Connected) {
                 ConnectionBanner(
                     state = state,
-                    onRetry = { repository.refreshHistory() },
+                    onRetry = { repository.retry() },
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
                 )
             }

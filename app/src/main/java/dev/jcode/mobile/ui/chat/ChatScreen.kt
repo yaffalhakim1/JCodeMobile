@@ -154,7 +154,7 @@ fun ChatScreen(
                 }
                 ConnectionBanner(
                     state = state,
-                    onRetry = { repository.refreshHistory() },
+                    onRetry = { repository.retry() },
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
                 )
                 state.errorBanner?.let { message ->

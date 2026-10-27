@@ -220,6 +220,25 @@ class JCodeRepository(context: Context) {
         _state.value = SessionState(phase = ConnectionPhase.Disconnected)
     }
 
+    /**
+     * The banner's Retry used to send `get_history` on a dead socket, which did
+     * nothing. Reconnect when the transport is down; refresh only when live.
+     */
+    fun retry() {
+        val profile = _activeProfile.value
+        if (profile == null) {
+            refreshHistory()
+            return
+        }
+        when (_state.value.phase) {
+            ConnectionPhase.Connected, ConnectionPhase.Connecting, ConnectionPhase.Reconnecting ->
+                refreshHistory()
+
+            ConnectionPhase.Disconnected, ConnectionPhase.Failed ->
+                scope.launch { connect(profile, profile.lastSessionId) }
+        }
+    }
+
     fun submit(text: String): Boolean {
         val trimmed = text.trim()
         if (trimmed.isEmpty()) return false
