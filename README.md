@@ -17,14 +17,14 @@ APK: `app/build/outputs/apk/release/app-release.apk`
 
 Unit tests: `gradlew.bat :app:testDebugUnitTest`
 
-## Download the APK from GitHub Actions
+## Download the APK
 
-Every push to `main` runs `.github/workflows/android.yml` and builds a
-release APK signed with the CI debug key (installable, not Play-ready):
+Every push to `main` publishes a rolling alpha release:
 
-1. Open the **Actions** tab and pick the latest `Android release APK` run.
-2. Download the `jcode-mobile-release` artifact.
-3. Unzip it and install `app-release.apk` on the phone.
+https://github.com/yaffalhakim1/JCodeMobile/releases/tag/alpha
+
+Download `jcode-mobile-alpha-0.1.0.apk` and install it directly. It is signed
+with the CI debug key (installable, not Play-ready).
 
 If an older debug build is installed, uninstall it first: the signatures
 differ and Android rejects an in-place update.

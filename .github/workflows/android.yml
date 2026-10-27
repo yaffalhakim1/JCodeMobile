@@ -6,6 +6,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,9 +37,17 @@ jobs:
       - name: Build release APK
         run: ./gradlew :app:assembleRelease --no-daemon --stacktrace
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: jcode-mobile-release
-          path: app/build/outputs/apk/release/app-release.apk
-          if-no-files-found: error
+      - name: Publish alpha APK
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ASSET="jcode-mobile-alpha-0.1.0.apk"
+          cp app/build/outputs/apk/release/app-release.apk "$ASSET"
+          if ! gh release view alpha --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release create alpha --repo "$GITHUB_REPOSITORY" \
+              --title "JCode Mobile Alpha" \
+              --prerelease \
+              --notes "Rolling alpha build of the JCode Android client."
+          fi
+          gh release upload alpha "$ASSET" --repo "$GITHUB_REPOSITORY" --clobber
